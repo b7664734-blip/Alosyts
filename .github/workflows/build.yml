@@ -1,0 +1,46 @@
+name: Build Minecraft Mod
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Repo Kontrol
+      uses: actions/checkout@v3
+
+    - name: Java 8 Kurulumu
+      uses: actions/setup-java@v3
+      with:
+        java-version: '8'
+        distribution: 'zulu'
+
+    - name: Klasor Yapisini Otomatik Duzelt
+      run: |
+        mkdir -p src/main/java/com/aysunmod
+        mkdir -p src/main/resources/assets/aysunmod/lang
+        mkdir -p src/main/resources/assets/aysunmod/models/item
+        mkdir -p src/main/resources/assets/aysunmod/textures/entity
+
+        mv *.java src/main/java/com/aysunmod/ 2>/dev/null || true
+        mv mcmod.info src/main/resources/ 2>/dev/null || true
+        mv *.lang src/main/resources/assets/aysunmod/lang/ 2>/dev/null || true
+        mv *.json src/main/resources/assets/aysunmod/models/item/ 2>/dev/null || true
+        mv *.png src/main/resources/assets/aysunmod/textures/entity/ 2>/dev/null || true
+
+    - name: Gradlew Yetkisi Ver
+      run: chmod +x gradlew || true
+
+    - name: Modu Derle (Build)
+      run: ./gradlew build --no-daemon
+
+    - name: Mod JAR Dosyasini Kaydet
+      uses: actions/upload-artifact@v3
+      with:
+        name: AysunMod-1.12.2
+        path: build/libs/*.jar
+        
