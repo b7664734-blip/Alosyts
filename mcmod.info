@@ -1,0 +1,11 @@
+[
+  {
+    "modid": "aysunmod",
+    "name": "Aysun Mod",
+    "description": "Aysun karakteri ve temel cagirma yumurtasi.",
+    "version": "0.1.1",
+    "mcversion": "1.12.2",
+    "authorList": ["AysunMod"],
+    "dependencies": []
+  }
+]
